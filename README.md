@@ -43,14 +43,15 @@ Unit tests can be run with the following command from anywhere in the project
 ```
 uv run pytest
 ```
-Integration tests are present in tests/
+Integration tests are present in tests/test_server.py, which will not run unless an Google GenAI API key is set.
 
 # Future improvements
 Improvements within each category are listed in rough order of importance.
 *Short-term TODOs*
-- Validate API and LLM call
-- Create static frontend with FastAPI after API
+- Validate API
+- Create static frontend with FastAPI after API with conversation support
 ## General
+- Create APIs to load and access config
 - Add actual tracing/logs (probably from OpenTelemetry)
 ## Ingestion
 - Expand and improve parsing (could use out-of-box solution like Markitdown, Docling, etc...)

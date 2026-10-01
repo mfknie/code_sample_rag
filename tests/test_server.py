@@ -6,13 +6,15 @@ from pathlib import Path
 from typing import Any
 
 # Codebase
-# Note that server.py import triggers load_dotenv() via setup.py -> models.py,
-# adding GEMINI_API_KEY to environment
 from code_sample_rag import server
 
 # 3rd-party
 import pytest
+from dotenv import load_dotenv
 from fastapi.testclient import TestClient
+
+# Load .env in order to check if GEMINI_API_KEY has been set
+load_dotenv()
 
 client = TestClient(server.app)
 

@@ -78,7 +78,7 @@ def answer(query: str,
         tuple of the form (<llm_response>, <interaction_id>)
     """
     system_instruction = config["generate"]["system_instruction"]
-    generation_config = config["generate"]["LLM"]["generation_config"]
+    generation_config = config["models"]["LLM"]["generation_config"]
     full_prompt = construct_prompt(config, query, retrieved_results)
     
     answer_text, inter_id = \

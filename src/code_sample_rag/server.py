@@ -1,6 +1,6 @@
 # Imports
 # Python
-from typing import Optional
+from typing import Any, Optional
 
 # Codebase
 from code_sample_rag import setup, retrieval, generate
@@ -15,7 +15,7 @@ RAG_RES_KEY = "rag_resources"
 
 # Expected input format for /query RAG API
 class RAGQueryRequest(BaseModel):
-    request: str
+    question: str
     session_id: Optional[str] = None # Keep track of sessions for multi-turn
 
 # Output format for /query RAG API
@@ -43,15 +43,15 @@ app = FastAPI(lifespan=lifespan)
 # func stays synchronous
 @app.post("/query")
 def rag_query(request: RAGQueryRequest) -> RAGQueryResponse:
-    query = request.query
+    query = request.question
     try:
         # TODO: Use prior chats for semantic retrieval
-        retrieved_results = retrieve_context(
+        retrieved_results = retrieval.retrieve_context(
             query=query,
             embed_model=app.state.resources.em,
-            index=resources.index,
-            doc_metadata=resources.doc_metadata,
-            top_k=resources.config["retrieval"]["num_results"]
+            index=app.state.resources.index,
+            doc_metadata=app.state.resources.doc_metadata,
+            top_k=app.state.resources.config["retrieval"]["num_results"]
         )
 
         # Use previousinteraction id for session if session was passed
@@ -61,9 +61,9 @@ def rag_query(request: RAGQueryRequest) -> RAGQueryResponse:
 
         answer, inter_id = generate.answer(
             query=query,
-            config=resources.config,
+            config=app.state.resources.config,
             retrieved_results=retrieved_results,
-            llm=resources.llm,
+            llm=app.state.resources.llm,
             prev_inter_id=prev_inter_id
         )
 

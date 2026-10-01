@@ -1,6 +1,11 @@
+# Imports
+# Python
+import re
+
+# 3rd-party
 from pypdf import PdfReader
 
-import re
+### CONSTANTS ###
 SPACE_RE = re.compile(r"[ \t\r]+")
 
 ### CLASSES ###

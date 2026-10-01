@@ -35,7 +35,7 @@ Prompting config contains customizable components for the system prompt, context
 
 ## Vector index
 A flat, local FAISS index is used to store embeddings for semantic search, as the included dataset is 
-relatively small (approximately 450 vectors after chunking). As such, using indexes (e.g. IVF, HNSW) or quantization would not lead to much benefit in speed or memory usage. In larger applications, it would
+relatively small (approximately 230 vectors after chunking). As such, using indexes (e.g. IVF, HNSW) or quantization would not lead to much benefit in speed or memory usage. In larger applications, it would
 make sense to use a dedicated database (or other solution) with vector functionality.
 
 ## Tests
@@ -69,3 +69,6 @@ Improvements within each category are listed in rough order of importance.
     * Enable editing of prior messages and allow conversation branching
     * Save and resume chats from history
     * Improve semantic search to incorporate prior model replies and user questions over the conversation
+
+# AI Usage
+AI was used for code review and for technical questions.

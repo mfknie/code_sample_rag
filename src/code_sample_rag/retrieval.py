@@ -1,12 +1,14 @@
 # Imports
 # Python
+from copy import deepcopy
 from typing import Any, Optional
 
 # Codebase
-import models
+from code_sample_rag import models
 
 # 3rd-party
 import faiss
+import numpy as np
 
 # Given a query, embed the query's text using the canonical embedding model 
 # set up in embedding module
@@ -22,7 +24,7 @@ def embed_query(query: str, embed_model: models.GoogleGenAIEmbed):
     """
     embeddings = embed_model.embed_text(texts=[query], task_type_str=models.TASK_TYPE_001_RET_QUERY)
     # Normalize embedings
-    embeddings_norm = np.linalg.norm(data, axis=1, keepdims=1)
+    embeddings_norm = np.linalg.norm(embeddings, axis=1, keepdims=1)
     return embeddings/embeddings_norm
 
 # Search the query embedding with cosine similarity against values in vector store
@@ -66,8 +68,8 @@ def retrieve_context(query: str,
     # Only retain first row, since there is only one query
     # TODO: Add minimum similarity score for inclusion in results
     for sim, ind in zip(similarities[0], indicies[0]):
-        current_metadata = doc_metadata[ind]
-        current_metadata["cos_sim"] = sim
+        current_metadata = deepcopy(doc_metadata[ind])
+        current_metadata["cos_sim"] = float(sim)
         retrieved_results.append(current_metadata)
 
     return retrieved_results

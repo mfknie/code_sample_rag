@@ -28,7 +28,7 @@ BRACKET_COURSE_CATALOG_FILE_PATH = DATA_PATH / "harvard_2015_2016_bracketed_cour
 ### FUNCS ###
 # TODO: Add to run CRUD on existing FAISS index
 # TODO: Add support for other indexes (e.g. IVF, HNSW)
-def create_vec_idx(data=np.ndarray) -> faiss.IndexFlatIP:
+def create_vec_idx(data: np.ndarray) -> faiss.IndexFlatIP:
     """
     Set up vector index given text data
     IN:
@@ -66,20 +66,16 @@ def persist_data(index: faiss.IndexFlatIP, doc_metadata: list[dict[str, Any]]) -
     os.makedirs(os.path.dirname(INDEX_CACHE_PATH), exist_ok=True)
     # If the index is already persisted, re-persist the files, writing to temporary
     # files and copying over to overwrite existing files once done.
-    if os.path.exists(INDEX_CACHE_PATH) and os.path.exists(METADATA_CACHE_PATH):
-        os.rename(INDEX_CACHE_PATH)
-        try:
-            faiss.write_index(index, str(TEMP_INDEX_CACHE_PATH))
-            with open(TEMP_METADATA_CACHE_PATH, "wb") as f:
-                pickle.dump(metadata, f)
-        except Exception as e:
-            print(f"Hit error {e} while writing restoring prior index")
-        os.replace(TEMP_INDEX_CACHE_PATH, INDEX_CACHE_PATH)
-        os.replace(TEMP_METADATA_CACHE_PATH, METADATA_CACHE_PATH)
-    else:
-        faiss.write_index(index, str(INDEX_CACHE_PATH))
-        with open(METADATA_CACHE_PATH, "wb") as f:
-            pickle.dump(metadata, f)
+    try:
+        # Write temporary files
+        faiss.write_index(index, str(TEMP_INDEX_CACHE_PATH))
+        with open(TEMP_METADATA_CACHE_PATH, "wb") as f:
+            pickle.dump(doc_metadata, f)
+    except Exception as e:
+        print(f"Hit error {e} while writing overwriting index and metadata, skipping replacement")
+        raise e
+    os.replace(TEMP_INDEX_CACHE_PATH, INDEX_CACHE_PATH)
+    os.replace(TEMP_METADATA_CACHE_PATH, METADATA_CACHE_PATH)
         
 
 def ingest(config: dict[str, Any], embed_model: models.GoogleGenAIEmbed) -> tuple[faiss.IndexFlatIP, dict[str, Any]]:

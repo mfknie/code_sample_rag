@@ -52,7 +52,7 @@ def load_genai_resources(config: dict[str, Any]) -> tuple[genai.Client, models.G
     em_model_id = config["models"]["EM"]["model_id"]
     llm_model_id = config["models"]["LLM"]["model_id"]
     em = models.GoogleGenAIEmbed(client, em_model_id)
-    llm = models.GoogleGenAILLM(llm_model_id)
+    llm = models.GoogleGenAILLM(client, llm_model_id)
     return client, em, llm
 
 

@@ -1,4 +1,4 @@
-### INTEGRATION TESTS FOR SERVER ###
+#### INTEGRATION TESTS FOR SERVER ####
 # Imports
 # Python
 import os

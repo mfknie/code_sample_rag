@@ -2,6 +2,7 @@
 import http
 import os
 import time
+import traceback
 from typing import Any, Optional, Union
 
 # 3rd-party
@@ -53,8 +54,9 @@ MODEL_ID_GEMINI_3_1_FLASH_LITE = "gemini-3.1-flash-lite"
 ### ERRORS ###
 class UnsupportedEmbedModelError(Exception):
     """Raised when input embedding model is not supported."""
-# TODO: Create prompt with System Prompt field
-# TODO: Support multi-turn https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations?
+
+class NoMoreRetries(Exception):
+    """Raised when no more retries are left"""
 
 
 ### FUNCS ###
@@ -89,7 +91,7 @@ def extract_retry_delay(err: genai.errors.ClientError) -> Union[float, None]:
         except Exception as e:
             print(f"Hit the following error while trying to extract retry delay, skipping: '{e}'")
     else:
-        print(f"The following is not a 429 (RESOURCE EXHAUSTED) error, skipping retry delay extraction: '{e}'")
+        print(f"The following is not a 429 (RESOURCE EXHAUSTED) error, skipping retry delay extraction: '{err}'")
 
     return retry_value
 
@@ -137,18 +139,17 @@ class GoogleGenAIEmbed():
         
         for batch_num, batch in enumerate(text_batches):
             print(f"Now sending {len(batch)} items for batch number {batch_num}")
-            for retry_count in range(MAX_RETRIES + 1):
+            obtained_batch = False
+            for retry_count in range(MAX_RETRIES):
                 try:
                     batch_result = self.client.models.embed_content(
                         model=self.model_id,
                         contents=batch,
                         **other_kwargs
                     )
+                    obtained_batch = True
                     break
                 except genai.errors.ClientError as e:
-                    if retry_count == MAX_RETRIES - 1:
-                        print(f"Hit retry limit of {MAX_RETRIES}")
-                        raise e
                     # If 429 resource exhausted error pops up, wait 50 seconds for the next request
                     # In practice, I saw about 42-47 seconds of delay 
                     retry_delay = extract_retry_delay(e)
@@ -157,6 +158,9 @@ class GoogleGenAIEmbed():
                         time.sleep(retry_delay + RETRY_DELAY_BUFFER)
                     else:
                         raise e
+            
+            if not obtained_batch:
+                raise NoMoreRetries(f"Ran out of retries after {MAX_RETRIES} attempts for model {self.model_id}")
 
             results.extend(batch_result.embeddings)
             # Sleep some seconds before moving on to next batch, except for last batch

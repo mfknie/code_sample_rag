@@ -1,10 +1,10 @@
 # Imports
+# Python
 import json
-from typing import Optional
+from typing import Any, Optional
 
-from code_sample_rag import retrieval
-
-from google import genai
+# Codebase
+from code_sample_rag import retrieval, models
 
 # Given retrieved documents and prompt from config,
 # call LLM with prompt
@@ -84,7 +84,7 @@ def answer(query: str,
     answer_text, inter_id = \
         llm.generate_text(text=full_prompt,
                           system_instruction=system_instruction,
-                          generation_config=generation
+                          generation_config=generation_config,
                           prev_inter_id=prev_inter_id)
 
     return answer_text, inter_id

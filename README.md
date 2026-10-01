@@ -47,28 +47,31 @@ Integration tests are present in tests/
 
 # Future improvements
 Improvements within each category are listed in rough order of importance.
+*Short-term TODOs*
+- Validate API and LLM call
+- Create static frontend with FastAPI after API
 ## General
-* Add actual tracing/logs (probably from OpenTelemetry)
+- Add actual tracing/logs (probably from OpenTelemetry)
 ## Ingestion
-* Expand and improve parsing (could use out-of-box solution like Markitdown, Docling, etc...)
-    * Add parsing support for more documetn types
-* Multilingual parsing/chunking (e.g. chunking assumes English punctuation)
-* Add more chunking strategies (e.g. document structure chunking (e.g. using <h[1-6]> tags in HTML files), contextual chunking (e.g. attaching LLM-generated summary of surrounding context), semantic chunking (using sentence embeddings to determine related adjacentcontent))
-* Post-processing to add more detail/context for chunks
+- Expand and improve parsing (could use out-of-box solution like Markitdown, Docling, etc...)
+    - Add parsing support for more documetn types
+- Multilingual parsing/chunking (e.g. chunking assumes English punctuation)
+- Add more chunking strategies (e.g. document structure chunking (e.g. using <h[1-6]> tags in HTML files), contextual chunking (e.g. attaching LLM-generated summary of surrounding context), semantic chunking (using sentence embeddings to determine related adjacentcontent))
+- Post-processing to add more detail/context for chunks
 ## LLM/embedding models
-* Use more secure cloud access methods (e.g. service accounts, instance principals, workload identity federation)
-* Support for more LLM/embedding model providers and models
-* Multimodal model support
-* Concurrency for RAG calls (if multiple users are ever expected)
+- Use more secure cloud access methods (e.g. service accounts, instance principals, workload identity federation)
+- Support for more LLM/embedding model providers and models
+- Multimodal model support
+- Concurrency for RAG calls (if multiple users are ever expected)
 ## RAG
-* Add configurable guardrails layer based on user provided keywords/regex or Guardrails APIs/models
+0 Add configurable guardrails layer based on user provided keywords/regex or Guardrails APIs/models
 ## Frontend
-* Use Svelte/React to build a more complete frontend
-* Frontend changes that require additional models.py, generate.py or retrieval.py changes
-    * Enable streaming
-    * Enable editing of prior messages and allow conversation branching
-    * Save and resume chats from history
-    * Improve semantic search to incorporate prior model replies and user questions over the conversation
+- Use Svelte/React to build a more complete frontend
+- Frontend changes that require additional models.py, generate.py or retrieval.py changes
+    - Enable streaming
+    - Enable editing of prior messages and allow conversation branching
+    - Save and resume chats from history
+    - Improve semantic search to incorporate prior model replies and user questions over the conversation
 
 # AI Usage
 AI was used for code review and for technical questions.

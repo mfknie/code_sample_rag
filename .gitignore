@@ -1,0 +1,9 @@
+# venv stuff from uv
+.venv/
+# FAISS cache
+cache/
+# Env vars with secrets
+.env
+# Ad-hoc est scripts
+DEL_*.py
+__pycache__/

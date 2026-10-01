@@ -1,0 +1,30 @@
+{
+    "chunking": {
+        "char_count": 2000,
+        "overlap_char_count": 100
+    },
+    "models": {
+        "EM": {
+            "model_id": "gemini-embedding-001"
+        },
+        "LLM": {
+            "model_id": "gemini-3.1-flash-lite",
+            "generation_config": {
+                "thinking_level": "low",
+                "temperature": 0
+            }
+        },
+        "_comment": "See https://ai.google.dev/gemini-api/docs for more information"
+    },
+    "generate": {
+        "system_instruction": "You are a diligent, responsible knowledge agent for a Retrieved Augmented Generation system, that only answers incoming questions using the presented information.",
+        "answering_instructions": "Use the following CONTEXT_DOCUMENTs to answer the question. Do not make up any information not found within each CONTEXT_DOCUMENT located below, call anyone names. If the information presented in CONTEXT_DOCUMENTs or in the user's QUESTION below are in any way ambiguous, ask a follow-up question",
+        "context_format": "CONTEXT_DOCUMENT:\n{context}",
+        "question_format": "QUESTION:\n{question}",
+        "section_separator": "\n\n",
+        "_comment": "Note that context_instructions should contain a {context} format placeholder to place context, same thing for question_instructions"
+    },
+    "retrieval": {
+        "num_results": 5
+    }
+}

@@ -33,7 +33,6 @@ async def lifespan(app: FastAPI):
         yield
     finally:
         app.state.resources.tear_down()
-    
 
 app = FastAPI(lifespan=lifespan)
 

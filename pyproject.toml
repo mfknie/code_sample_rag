@@ -24,3 +24,10 @@ code-sample-rag = "code_sample_rag:main"
 [build-system]
 requires = ["uv_build>=0.12.19,<0.13.0"]
 build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+markers = [
+    "integration: marks tests that hit the real GenAI API (deselect with '-m \"not integration\"')",
+]
+addopts = "-m 'not integration'"

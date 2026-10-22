@@ -40,7 +40,7 @@ def test_rag_query_request():
         session_id=all_fields_s_id
     )
     assert all_fields.question == all_fields_q
-    assert all_field.session_id == all_fields_s_id
+    assert all_fields.session_id == all_fields_s_id
 
 # Test for RAGQueryResponse object
 def test_rag_query_response():
@@ -61,6 +61,10 @@ def test_rag_query_response():
             "cos_sim": 0.83
         }
     ]
+    all_fields = server.RAGQueryResponse(
+        answer=all_fields_a,
+        sources=all_fields_s
+    )
     assert all_fields.answer == all_fields_a
     assert all_fields.sources == all_fields_s
 

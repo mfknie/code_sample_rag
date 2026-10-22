@@ -65,7 +65,7 @@ Improvements within each category are listed in rough order of importance.
 - Multimodal model support
 - Concurrency for RAG calls (if multiple users are ever expected)
 ## RAG
-0 Add configurable guardrails layer based on user provided keywords/regex or Guardrails APIs/models
+- Add configurable guardrails layer based on user provided keywords/regex or Guardrails APIs/models
 ## Frontend
 - Use Svelte/React to build a more complete frontend
 - Frontend changes that require additional models.py, generate.py or retrieval.py changes
@@ -75,4 +75,4 @@ Improvements within each category are listed in rough order of importance.
     - Improve semantic search to incorporate prior model replies and user questions over the conversation
 
 # AI Usage
-AI was used for code review and for technical questions.
+Claude Sonnet 5 (via claude.ai) was used for code review and for technical questions.
